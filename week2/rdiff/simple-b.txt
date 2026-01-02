@@ -1,6 +1,5 @@
 a
 added
-b
 c
 added
 d

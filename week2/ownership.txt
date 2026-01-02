@@ -1,5 +1,5 @@
 Example 1:
-```
+```rust
 fn main() {
     let mut s = String::from("hello");
     let ref1 = &s;
@@ -9,21 +9,40 @@ fn main() {
     println!("{}", ref3.to_uppercase());
 }
 ```
-
-
+结果：编译错误
+原因：s被不可变借用给了ref1、ref2、ref3，在被借用期间rust不允许对s进行修改。
+修改：先让ref3的生命周期结束，就能对s进行修改。
+```rust
+fn main() {
+    let mut s = String::from("hello");
+    let ref1 = &s;
+    let ref2 = &ref1;
+    let ref3 = &ref2;
+    println!("{}", ref3.to_uppercase());
+    s = String::from("goodbye");
+}
+```
 
 Example 2:
-```
+```rust
 fn drip_drop() -> &String {
+    let s = String::from("hello world!");
+    return &s;
+}
+```
+结果：编译失败
+原因：把一个函数内部的局部变量作为引用的形式返回给外部，函数结束的时候，这个局部变量会自动释放。
+修改：
+```rust
+fn drip_drop() -> String {
     let s = String::from("hello world!");
     return &s;
 }
 ```
 
 
-
 Example 3:
-```
+```rust
 fn main() {
     let s1 = String::from("hello");
     let mut v = Vec::new();
@@ -32,3 +51,9 @@ fn main() {
     println!("{}", s2);
 }
 ```
+结果：编译失败
+原因：错误的地方在于`let s2: String = v[0];`，rust不允许直接把Vec内的元素直接转移走，这样会造成Vec内部的内存出现空洞。
+三种修改方式：
+（1） `let s2: &String = &v[0];`只是借用一下元素，并不是把owner转移走。
+（2）`let s2: String = v.remove(0);`使用remove，让s2拿到owner，v删除该元素
+（3）`let s2: String = v[0].clone();`深拷贝
