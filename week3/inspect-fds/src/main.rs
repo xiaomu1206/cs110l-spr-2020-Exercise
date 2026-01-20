@@ -13,7 +13,18 @@ fn main() {
     let target = &args[1];
 
     // TODO: Milestone 1: Get the target Process using psutils::get_target()
-    ps_utils::get_target(target);
+    match ps_utils::get_target(target) {
+        Ok(Some(_proc)) => {
+            println!("Found process: {:?}", _proc);
+            _proc.print();
+        }
+        Ok(None) => {
+            println!("No matching process found");
+        }
+        Err(e) => {
+            println!("Error: {}", e);
+        }
+    }
 }
 
 #[cfg(test)]

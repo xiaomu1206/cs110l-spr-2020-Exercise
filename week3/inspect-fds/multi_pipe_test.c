@@ -14,7 +14,7 @@ int main() {
         close(fds1[1]);
         close(fds2[0]);
         close(fds2[1]);
-        sleep(2);
+        pause();
         return 0;
     }
     close(fds1[0]);
