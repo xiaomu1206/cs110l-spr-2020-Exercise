@@ -29,7 +29,6 @@ impl Process {
         let dir = format!("/proc/{}/fd", self.pid);
         /* 2. read the fd */
         let entries = fs::read_dir(dir).ok()?;
-
         /* 3. Iterate over each directory */
         for entry in entries {
             let entry = entry.ok()?;
