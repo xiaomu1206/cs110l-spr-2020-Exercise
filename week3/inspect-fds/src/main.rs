@@ -12,11 +12,19 @@ fn main() {
     }
     let target = &args[1];
 
-    // TODO: Milestone 1: Get the target Process using psutils::get_target()
     match ps_utils::get_target(target) {
         Ok(Some(_proc)) => {
-            println!("Found process: {:?}", _proc);
+            println!("{:?}", _proc);
             _proc.print();
+            if let Some(child_process)= ps_utils::get_child_processes(_proc.pid).ok(){
+                println!("");
+                println!("{:?}", child_process);
+                for process in child_process {
+                    process.print();
+                }
+            } else {
+                println!("No child process here!");
+            }
         }
         Ok(None) => {
             println!("No matching process found");

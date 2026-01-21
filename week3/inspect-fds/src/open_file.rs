@@ -135,14 +135,13 @@ impl OpenFile {
         let cursor = Self::parse_cursor(&fd_info)?;
         let access_mode = Self::parse_access_mode(&fd_info)?;
 
-        Some(OpenFile { name: name, cursor: cursor, access_mode: access_mode})
+        Some(OpenFile::new(name, cursor, access_mode))
     }
 
     /// This function returns the OpenFile's name with ANSI escape codes included to colorize
     /// pipe names. It hashes the pipe name so that the same pipe name will always result in the
     /// same color. This is useful for making program output more readable, since a user can
     /// quickly see all the fds that point to a particular pipe.
-    #[allow(unused)] // TODO: delete this line for Milestone 5
     pub fn colorized_name(&self) -> String {
         if self.name.starts_with("<pipe") {
             let mut hash = DefaultHasher::new();

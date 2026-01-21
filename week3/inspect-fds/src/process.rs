@@ -1,12 +1,22 @@
-use crate::open_file::{self, OpenFile};
-#[allow(unused)] // TODO: delete this line for Milestone 3
+use crate::open_file::{OpenFile};
+use core::fmt;
 use std::fs;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct Process {
     pub pid: usize,
     pub ppid: usize,
     pub command: String,
+}
+
+impl fmt::Debug for Process {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "========== “{}” (pid {}, ppid={}) ==========",
+            self.command, self.pid, self.ppid
+        )
+    }
 }
 
 impl Process {
